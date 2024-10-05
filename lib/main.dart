@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:getx_todo_app/models/task_model.dart';
+import 'package:getx_todo_app/views/home_view.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskModelAdapter());
+  await Hive.openBox<Task>('todoTasks');
+  runApp(const ToDoAppWithGetX());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ToDoAppWithGetX extends StatelessWidget {
+  const ToDoAppWithGetX({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text(
-            'Hello'
-          ),
-        ),
+      title: 'To Do Tasks',
+      theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: const HomeView(),
     );
   }
 }
