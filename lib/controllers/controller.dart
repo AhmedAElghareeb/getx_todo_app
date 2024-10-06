@@ -48,4 +48,11 @@ class TaskController extends GetxController {
     taskList[index].isDone = !taskList[index].isDone;
     taskList.refresh();
   }
+
+  @override
+  void onClose() {
+    titleController.close();
+    descriptionController.close();
+    super.onClose();
+  }
 }
